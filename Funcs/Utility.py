@@ -13,63 +13,45 @@ import time
 
 DEFAULT_TZ = pytz.FixedOffset(540)  # GMT+09:00; Asia/Seoul
 
-os.chdir("/home/panyu/Documents/DataSet/D#4(Year2022)")
+PATH_DATA = "/home/panyu/Documents/DataSet/D#1"
+PATH_ESM = os.path.join(PATH_DATA, 'EsmResponse.csv')
+PATH_PARTICIPANT = os.path.join(PATH_DATA, 'UserInfo.csv')
+PATH_SENSOR = os.path.join(PATH_DATA, 'Sensor')
 
-PATH_ESM = os.path.join('SubjData', 'EsmResponse.csv')
-PATH_PARTICIPANT = os.path.join('SubjData', 'UserInfo.csv')
-PATH_SENSOR = './newdata'
-PATH_INTERMEDIATE = '/home/panyu/Documents/Code/StressDetection/Intermediate'
-PATH_FIG = '/home/panyu/Documents/Code/StressDetection/fig'
+PATH_INTERMEDIATE = './Intermediate'
 
-LABEL_THRESHOLD = 87  # D#1: 31, D#2: 31, D#3: 108, D#4: 87
+
+#LABEL_THRESHOLD = 87  # D#1: 31, D#2: 31, D#3: 108, D#4: 87
 
 DATA_TYPES = {
-#    'ActivityEvent': 'ACE', 
-    'ActivityTransition': 'ACT', 
-    'AppUsageEvent': 'APP', 
-#    'BatteryEvent': 'BAT', 
-    'CallEvent': 'CAE', 
-#    'ChargeEvent': 'CHG', 
-#    'DataTraffic': 'DAT', 
-#    'InstalledApp': 'INS', 
-    'Location': 'LOC', 
-    'MessageEvent': 'MSG', 
-    'Fitbit-Calorie': 'CAL', 
-    'Fitbit-Distance': 'DST', 
-    'Fitbit-HeartRate': 'HRT', 
-    'Fitbit-StepCount': 'STP', 
-#    'OnOffEvent': 'ONF', 
-#    'PowerSaveEvent': 'PWS', 
-#    'RingerModeEvent': 'RNG', 
-    'ScreenEvent': 'SCR', 
-#    'WifiScan': 'WIF'
+    'Acceleration': 'ACC',
+    'AmbientLight': 'AML',
+    'Calorie': 'CAL',
+    'Distance': 'DST',
+    'EDA': 'EDA',
+    'HR': 'HRT',
+    'RRI': 'RRI',
+    'SkinTemperature': 'SKT',
+    'StepCount': 'STP',
+    'UltraViolet': 'ULV',
+    'ActivityEvent': 'ACE',
+    'ActivityTransition': 'ACT',
+    'AppUsageEvent': 'APP',
+    'BatteryEvent': 'BAT',
+    'CallEvent': 'CAE',
+    'Connectivity': 'CON',
+    'DataTraffic': 'DAT',
+    'InstalledApp': 'INS',
+    'Location': 'LOC',
+    'MediaEvent': 'MED',
+    'MessageEvent': 'MSG',
+    'WiFi': 'WIF',
+    'ScreenEvent': 'SCR',
+    'RingerModeEvent': 'RNG',
+    'ChargeEvent': 'CHG',
+    'PowerSaveEvent': 'PWS',
+    'OnOffEvent': 'ONF'
 }
-
-DATA_TYPES_SMARTPHONE = [
-#    'ActivityEvent',
-    'ActivityTransition',
-    'AppUsageEvent',
-#    'BatteryEvent',
-    'CallEvent',
-#    'DataTraffic',
-#    'InstalledApp',
-    'Location',
-    'MessageEvent',
-#    'WifiScan',
-    'ScreenEvent',
-#    'RingerModeEvent',
-#    'ChargeEvent',
-#    'PowerSaveEvent',
-#    'OnOffEvent'
-]
-
-DATA_TYPES_WEARABLE = [
-    'Fitbit-Calorie',
-    'Fitbit-Distance',
-    'Fitbit-HeartRate',
-    'Fitbit-StepCount'
-]
-
 
 
 def load(path: str):
@@ -84,16 +66,6 @@ def dump(obj, path: str):
     
 def log(msg: any):
     print('[{}] {}'.format(datetime.now().strftime('%y-%m-%d %H:%M:%S'), msg))
-
-    
-@contextmanager
-def log_t(msg: any):
-    try:
-        s = time.time()
-        yield None    
-    finally:
-        elasped_time = time.time() - s
-        log(f'({elasped_time:.2f}s) {msg}')
 
 
 def summary(x):
@@ -120,6 +92,7 @@ def summary(x):
             x_nan = x[np.isnan(x)]
             x_norm = x[~np.isnan(x)]
             
+            tot = np.sum(x_norm)
             m = np.mean(x_norm)
             me = np.median(x_norm)
             s = np.std(x_norm, ddof=1)
@@ -129,6 +102,7 @@ def summary(x):
             
             return {
                 'n': n,
+                'sum': tot,
                 'mean': m,
                 'SD': s,
                 'med': me,
@@ -147,6 +121,8 @@ def on_ray(*args, **kwargs):
         yield None
     finally:
         ray.shutdown()
+        
+        
 transform = {
     'GAME': 'ENTER',
     'GAME_TRIVIA': 'ENTER',
