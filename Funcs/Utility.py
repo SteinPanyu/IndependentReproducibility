@@ -13,12 +13,12 @@ import time
 
 DEFAULT_TZ = pytz.FixedOffset(540)  # GMT+09:00; Asia/Seoul
 
-PATH_DATA = "/home/panyu/Documents/DataSet/D#1"
+PATH_DATA = "/var/nfs_share/D#1"
 PATH_ESM = os.path.join(PATH_DATA, 'EsmResponse.csv')
 PATH_PARTICIPANT = os.path.join(PATH_DATA, 'UserInfo.csv')
 PATH_SENSOR = os.path.join(PATH_DATA, 'Sensor')
 
-PATH_INTERMEDIATE = './Intermediate'
+PATH_INTERMEDIATE = '/var/nfs_share/Stress_Detection_D-1/Intermediate'
 
 
 #LABEL_THRESHOLD = 87  # D#1: 31, D#2: 31, D#3: 108, D#4: 87
