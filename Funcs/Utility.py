@@ -19,6 +19,7 @@ PATH_PARTICIPANT = os.path.join(PATH_DATA, 'UserInfo.csv')
 PATH_SENSOR = os.path.join(PATH_DATA, 'Sensor')
 
 PATH_INTERMEDIATE = '/var/nfs_share/Stress_Detection_D-1/Intermediate'
+RANDOM_STATE =42
 
 
 #LABEL_THRESHOLD = 87  # D#1: 31, D#2: 31, D#3: 108, D#4: 87
