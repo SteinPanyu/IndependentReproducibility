@@ -9,6 +9,7 @@ from datetime import datetime
 from contextlib import contextmanager
 import warnings
 import time
+from typing import Optional
 
 
 DEFAULT_TZ = pytz.FixedOffset(540)  # GMT+09:00; Asia/Seoul
@@ -17,13 +18,14 @@ PATH_DATA = "/var/nfs_share/D#1"
 PATH_ESM = os.path.join(PATH_DATA, 'EsmResponse.csv')
 PATH_PARTICIPANT = os.path.join(PATH_DATA, 'UserInfo.csv')
 PATH_SENSOR = os.path.join(PATH_DATA, 'Sensor')
+PATH_RESULTS = '/var/nfs_share/Stress_Detection_D-1/Results'
 
 PATH_INTERMEDIATE = '/var/nfs_share/Stress_Detection_D-1/Intermediate'
 RANDOM_STATE =42
 
 
 #LABEL_THRESHOLD = 87  # D#1: 31, D#2: 31, D#3: 108, D#4: 87
-
+seed= RANDOM_STATE
 DATA_TYPES = {
     'Acceleration': 'ACC',
     'AmbientLight': 'AML',
@@ -111,7 +113,29 @@ def summary(x):
                 'conf.': (conf_l, conf_u),
                 'nan_count': n_nan
             }
-
+        
+def _load_data(
+    name: str
+) -> Optional[pd.DataFrame]:
+    paths = [
+        (d, os.path.join(PATH_SENSOR, d, f'{name}.csv'))
+        for d in os.listdir(PATH_SENSOR)
+        if d.startswith('P')
+    ]
+    return pd.concat(
+        filter(
+            lambda x: len(x.index), 
+            [
+                pd.read_csv(p).assign(pcode=pcode)
+                for pcode, p in paths
+                if os.path.exists(p)
+            ]
+        ), ignore_index=True
+    ).assign(
+        timestamp=lambda x: pd.to_datetime(x['timestamp'], unit='ms', utc=True).dt.tz_convert(DEFAULT_TZ)
+    ).set_index(
+        ['pcode', 'timestamp']
+    )
 
 @contextmanager
 def on_ray(*args, **kwargs):
@@ -122,7 +146,7 @@ def on_ray(*args, **kwargs):
         yield None
     finally:
         ray.shutdown()
-        
+       
         
 transform = {
     'GAME': 'ENTER',
@@ -180,4 +204,41 @@ transform = {
     'MISC': 'SYSTEM', # ABC logger
      None: 'UNKNOWN',
     'UNKNOWN':'UNKNOWN'
+}
+
+
+param = {
+    "predictor": 'cpu_predictor',
+    "early_stopping_rounds": 200,
+    "reg_alpha": 0,
+    "colsample_bytree": 1,
+    "colsample_bylevel": 1,
+    "scale_pos_weight": 1,
+    "learning_rate": 0.3,
+    "nthread": 10,
+    "min_child_weight": 1,
+    "n_estimators": 1000,
+    "subsample": 1,
+    "reg_lambda": 1,
+    "seed": seed,
+    "objective": 'binary:logistic',
+    "max_depth": 6,
+    "gamma": 0,
+    'eval_metric': 'auc',
+    'silent': 1,
+#     'tree_method': 'exact',
+    'tree_method': 'gpu_hist',
+    'debug': 0,
+    'use_task_gain_self': 0,
+    'when_task_split': 1,
+    'how_task_split': 0,
+    'min_task_gain': 0.0,
+    'task_gain_margin': 0.0,
+    'max_neg_sample_ratio': 0.4,
+    'which_task_value': 2,
+    'baseline_alpha': 1.0,
+    'baseline_lambda': 1.0,
+    'tasks_list_': (0, 1),
+    'task_num_for_init_vec': 3,
+    'task_num_for_OLF': 2,
 }
