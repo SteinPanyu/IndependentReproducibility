@@ -1,6 +1,0 @@
-Removal step,Remaining number of features
-Original AFs,928
-Elimination of zero variance features,849
-Elimination of mostly missing features,829
-Elimination of pairwise correlations,337
-Lasso,130
