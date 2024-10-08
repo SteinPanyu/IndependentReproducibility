@@ -102,5 +102,5 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Acknowledgments
 
-- K-EmoPhone Dataset (Kim et al., 2023) for providing the data used in this project.
+- K-EmoPhone Dataset (Kang et al., 2023) for providing the data used in this project.
 - scikit-learn and pandas libraries for data processing and model building.
