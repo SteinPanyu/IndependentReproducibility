@@ -1,4 +1,4 @@
-# Stress Detection Using the K-EmoPhone Dataset
+# Stress Detection Pipeline Using the K-EmoPhone Dataset
 
 This repository provides resources for independent reproducibility experiments focused on stress detection using the K-EmoPhone dataset. It includes a complete machine learning pipeline from data exploration to model evaluation and hyperparameter tuning. The environment is configured using Conda, with dependencies outlined in `environment.yaml`.
 
@@ -26,15 +26,15 @@ Kim, H. R., Yang, J., Lee, J. H., & Kim, H. S. (2023). K-EmoPhone: Korean stress
 
 ```bash
 .
-├── EDA.ipynb                                # Exploratory Data Analysis
-├── Feature_Extraction.ipynb                 # Feature Extraction notebook
 ├── Funcs/
 │   ├── Utility.py                           # Utility functions for data processing
-├── HyperParameterTuning.ipynb               # Hyperparameter tuning notebook
+├── EDA.ipynb                                # Exploratory Data Analysis
+├── Feature_Extraction.ipynb                 # Feature Extraction notebook
+├── HyperParameterTuning.ipynb               # Hyperparameter tuning notebook (here hyperparameter tuning is just a simple trial to test the impact of model complexity related hyperparameters)
 ├── Model Evaluation & Deeper Analysis.ipynb # Evaluation and deeper analysis                        
 ├── Model Training.ipynb                     # Model training procedures
 ├── Preprocessing.ipynb                      # Data preprocessing steps
-├── Visualization_Overfitting.ipynb          # Overfitting visualization and mitigation
+├── Visualization_Overfitting.ipynb          # Overfitting visualization
 │                                
 └── environment.yaml                         # Conda environment configuration
 ```
@@ -63,8 +63,8 @@ The project is organized into Jupyter notebooks, each representing a stage of th
 
 1. **Exploratory Data Analysis (EDA)**
    - Notebook: `EDA.ipynb`
-   - Purpose: Visualize and explore the data to identify patterns indicating stress.
-   - Includes: Both audio and text data insights.
+   - Purpose: Visualize and explore the data before preprocessing the sensor data.
+   - Includes: Visualize the raw sensor data and labels
 
 2. **Preprocessing**
    - Notebook: `Preprocessing.ipynb`
@@ -74,27 +74,29 @@ The project is organized into Jupyter notebooks, each representing a stage of th
 3. **Feature Extraction**
    - Notebook: `Feature_Extraction.ipynb`
    - Purpose: Extract relevant features from the dataset.
-   - Includes: Extraction of pitch, intensity, and text-based markers.
+   - Includes: Extraction of raw sensor data features.
+   ![image](https://github.com/user-attachments/assets/4f9e59f8-f07b-4d22-b907-e831edd5fe34)
+
 
 4. **Model Training**
    - Notebook: `Model Training.ipynb`
    - Purpose: Train machine learning models to classify stress levels.
    - Includes: Training procedures, model selection, and validation.
 
-5. **Hyperparameter Tuning**
-   - Notebook: `HyperParameterTuning.ipynb`
-   - Purpose: Optimize model parameters to improve performance.
-   - Includes: Grid search and cross-validation techniques.
-
-6. **Model Evaluation & Deeper Analysis**
+5. **Model Evaluation & Deeper Analysis**
    - Notebook: `Model Evaluation & Deeper Analysis.ipynb`
    - Purpose: Evaluate the model's performance with detailed analysis.
    - Includes: Metrics, interpretability, and areas for improvement.
 
-7. **Overfitting Visualization**
+6. **Overfitting Visualization**
    - Notebook: `Visualization_Overfitting.ipynb`
    - Purpose: Visualize and mitigate overfitting.
-   - Includes: Regularization and model complexity adjustments.
+   - Includes: Visualize the training and testing performance plot.
+
+7. **Hyperparameter Tuning (Overfitting Mitigation)**
+   - Notebook: `HyperParameterTuning.ipynb`
+   - Purpose: Optimize model complexity related parameters to mitigate overfitting.
+   - Includes: HyperOPT for model complexity related hyperparameters
 
 ## License
 
