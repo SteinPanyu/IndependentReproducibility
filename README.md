@@ -75,7 +75,8 @@ The project is organized into Jupyter notebooks, each representing a stage of th
    - Notebook: `Feature_Extraction.ipynb`
    - Purpose: Extract relevant features from the dataset.
    - Includes: Extraction of raw sensor data features.
-   - ![image](https://github.com/user-attachments/assets/4f9e59f8-f07b-4d22-b907-e831edd5fe34)
+   
+   ![image](https://github.com/user-attachments/assets/4f9e59f8-f07b-4d22-b907-e831edd5fe34)
 
 
 4. **Model Training**
