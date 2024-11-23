@@ -20,8 +20,9 @@ This project leverages the K-EmoPhone dataset to develop and optimize models for
 
 This project uses the K-EmoPhone dataset, which is described in the following publication:
 
-Kim, H. R., Yang, J., Lee, J. H., & Kim, H. S. (2023). K-EmoPhone: Korean stress and emotion database using smartphone. Scientific data, 10(1), 351. <https://doi.org/10.1038/s41597-023-02249-1>
+Kim, H. R., Yang, J., Lee, J. H., & Kim, H. S. (2023). K-EmoPhone: Korean stress and emotion database using smartphone. Scientific data, 10(1), 351. <https://www.nature.com/articles/s41597-023-02248-2>
 
+The dataset can be accessed via Zenodo. <https://doi.org/10.5281/zenodo.7606611>
 ## Project Structure
 
 ```bash
